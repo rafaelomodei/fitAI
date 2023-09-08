@@ -1,40 +1,20 @@
 import { Center, Flex, Heading, IconButton } from '@chakra-ui/react';
 import { LegacyRef, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { scriptCam } from './script';
 import useWindowDimensions from '../../hooks/windowDimesionHook';
 import { Canvas, Footer, Header, Video } from './styles';
 import { CloseIcon } from '@chakra-ui/icons';
+import useCam from '../../hooks/useCam';
 
 const Training = () => {
   const navigate = useNavigate();
+  const { canvasRef, videoRef, startCam, stopCam } = useCam();
 
   const { width, height } = useWindowDimensions();
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const canvasCtxRef = useRef<CanvasRenderingContext2D | null>(null);
 
   useEffect(() => {
-    if (canvasRef.current) {
-      canvasCtxRef.current = canvasRef.current.getContext('2d');
-    }
+    startCam();
   }, []);
-
-  useEffect(() => {
-    if (videoRef.current && canvasRef.current)
-      scriptCam({
-        videoElement: videoRef.current,
-        canvasElement: canvasRef.current,
-        width,
-        height,
-      });
-  }, []);
-
-  // useEffect(() => {
-  //   console.info('videoRef: ', videoRef.current?.width);
-  //   console.info('height: ', videoRef.current?.height);
-  // }, [videoRef]);
 
   return (
     <>
@@ -64,7 +44,10 @@ const Training = () => {
             aria-label='Fechar'
             size='sm'
             boxShadow='lg'
-            onClick={() => navigate('/home')}
+            onClick={() => {
+              stopCam();
+              navigate('/home');
+            }}
             icon={<CloseIcon />}
           />
         </Header>
