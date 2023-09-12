@@ -20,6 +20,7 @@ export const Video = styled.video`
 export const Header = styled.header`
   width: 100%;
   display: flex;
+  justify-content: space-between;
 `;
 
 export const Footer = styled.footer`

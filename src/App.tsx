@@ -3,12 +3,15 @@ import { theme } from './theme';
 import { TrainingProvider } from './providers/Training';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './routers';
+import { MediaPipeProvider } from './providers/MediaPipe';
 
 function App() {
   return (
     <ChakraProvider theme={theme}>
       <TrainingProvider>
-        <RouterProvider router={router} />
+        <MediaPipeProvider>
+          <RouterProvider router={router} />
+        </MediaPipeProvider>
       </TrainingProvider>
     </ChakraProvider>
   );

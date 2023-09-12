@@ -10,6 +10,8 @@ const theme = extendTheme({
     primary: '#6083FF',
     primary110: '#4569E7',
     primary90: '#7694FF',
+    primary30: '#C0CEFF',
+    primary10: '#F1F4FF',
   },
 });
 

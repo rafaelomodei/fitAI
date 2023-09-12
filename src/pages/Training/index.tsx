@@ -1,20 +1,45 @@
-import { Center, Flex, Heading, IconButton } from '@chakra-ui/react';
-import { LegacyRef, useEffect, useRef } from 'react';
+import {
+  Button,
+  Center,
+  Divider,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
+  Flex,
+  Heading,
+  IconButton,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  useDisclosure,
+} from '@chakra-ui/react';
+import { LegacyRef, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useWindowDimensions from '../../hooks/windowDimesionHook';
 import { Canvas, Footer, Header, Video } from './styles';
-import { CloseIcon } from '@chakra-ui/icons';
+import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import useCam from '../../hooks/useCam';
+import SideBar from '../../components/organisms/SideBar';
 
 const Training = () => {
+  const [startTraining, setStartTraining] = useState<boolean>(false);
+  const [counter, setCounter] = useState<number>(0);
+
   const navigate = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { canvasRef, videoRef, startCam, stopCam } = useCam();
+  const btnOpenMenuRef = useRef<HTMLButtonElement>(null);
 
   const { width, height } = useWindowDimensions();
 
-  useEffect(() => {
-    startCam();
-  }, []);
+  // useEffect(() => {
+  //   startCam();
+  // }, []);
 
   return (
     <>
@@ -38,6 +63,7 @@ const Training = () => {
         flexDirection='column'
         justifyContent='space-between'
       >
+        <SideBar isOpen={isOpen} onClose={onClose} />
         <Header>
           <IconButton
             variant='solid'
@@ -50,20 +76,36 @@ const Training = () => {
             }}
             icon={<CloseIcon />}
           />
-        </Header>
-        <Footer>
           <IconButton
-            isRound={true}
             variant='solid'
-            aria-label='Contador'
-            size='lg'
-            width={20}
-            height={20}
-            fontSize='xx-large'
-            fontWeight='bold'
-            boxShadow='xl'
-            icon={<Center>3</Center>}
+            aria-label='Fechar'
+            size='sm'
+            boxShadow='lg'
+            ref={btnOpenMenuRef as LegacyRef<HTMLButtonElement>}
+            onClick={onOpen}
+            icon={<HamburgerIcon />}
           />
+        </Header>
+
+        <Footer>
+          {startTraining ? (
+            <IconButton
+              isRound={true}
+              variant='solid'
+              aria-label='Contador'
+              size='lg'
+              width={16}
+              height={16}
+              fontSize='xx-large'
+              fontWeight='bold'
+              boxShadow='xl'
+              icon={<Center>{counter}</Center>}
+            />
+          ) : (
+            <Button size='lg' onClick={() => setStartTraining(true)}>
+              Iniciar treino
+            </Button>
+          )}
         </Footer>
       </Flex>
     </>
