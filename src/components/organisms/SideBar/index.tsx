@@ -38,14 +38,15 @@ const SideBar = (props: ISideBarProps) => {
               <Tab
                 _selected={{ bg: 'primary10', border: '2px solid #C0CEFF' }}
                 borderRadius={8}
+                p={2}
               >
-                <Image src={PNG.GoogleLogo} h={8} />
+                <Image src={PNG.MediaPipeLogo} h={7} />
               </Tab>
               <Tab
                 _selected={{ bg: 'primary10', border: '2px solid #C0CEFF' }}
                 borderRadius={8}
               >
-                <Image src={PNG.OpenCVLogo} h={8} />
+                <Image src={PNG.YoloV8Logo} h={7} />
               </Tab>
             </TabList>
             <TabPanels>

@@ -1,9 +1,9 @@
 import { drawConnectors, drawLandmarks } from '@mediapipe/drawing_utils';
 import { POSE_CONNECTIONS } from '@mediapipe/pose';
-import { IonResultsProps } from './interfaces';
+import { IonResultsProps } from './interface';
 
 const onResults = (props: IonResultsProps) => {
-  const { results, video, canvas, canvasCtx } = props;
+  const { results, video, canvas, canvasCtx, showSegmentation } = props;
   // if (!results.poseLandmarks) {
   //   grid.updateLandmarks([]);
   //   return;
@@ -21,7 +21,7 @@ const onResults = (props: IonResultsProps) => {
 
     // Only overwrite existing pixels.
     canvasCtx.globalCompositeOperation = 'source-in';
-    canvasCtx.fillStyle = '#1756D300';
+    canvasCtx.fillStyle = showSegmentation ? '#0055FF82' : '#0055FF00';
     canvasCtx?.fillRect(0, 0, video.width, video.height);
 
     // Only overwrite missing pixels.

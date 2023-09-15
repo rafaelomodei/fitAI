@@ -25,6 +25,7 @@ import { Canvas, Footer, Header, Video } from './styles';
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import useCam from '../../hooks/useCam';
 import SideBar from '../../components/organisms/SideBar';
+import useMediaPipe from '../../hooks/useMediaPipe';
 
 const Training = () => {
   const [startTraining, setStartTraining] = useState<boolean>(false);
@@ -37,9 +38,9 @@ const Training = () => {
 
   const { width, height } = useWindowDimensions();
 
-  // useEffect(() => {
-  //   startCam();
-  // }, []);
+  useEffect(() => {
+    startCam();
+  }, []);
 
   return (
     <>

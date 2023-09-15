@@ -10,21 +10,19 @@ import {
   Switch,
   Text,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useMediaPipeStore } from '../../../../providers/MediaPipe';
 
 const ContentGoogle = () => {
-  const [showDrawLines, setShowDrawLines] = useState<boolean>(false);
-  const [showSegmentation, setShowSegmentation] = useState<boolean>(false);
-
-  const [numPose, setNumPose] = useState<number>(1);
-  const [minPoseDetectConfidence, setMinPoseDetectConfidence] =
-    useState<number>(50);
-
-  const [minPosePresenceConfidence, setMinPosePresenceConfidence] =
-    useState<number>(50);
-
-  const [minTrackingConfidence, setMinTrackingConfidence] =
-    useState<number>(50);
+  const {
+    showDrawLines,
+    showSegmentation,
+    setNumPose,
+    setShowDrawLines,
+    setShowSegmentation,
+    setMinTrackingConfidence,
+    setMinPoseDetectConfidence,
+    setMinPosePresenceConfidence,
+  } = useMediaPipeStore();
 
   return (
     <Flex flexDirection='column' gap={8}>
@@ -95,10 +93,10 @@ const ContentGoogle = () => {
             <Text>1%</Text>
             <Slider
               aria-label='slider'
-              defaultValue={50}
-              min={1}
-              max={99}
-              step={1}
+              defaultValue={0.5}
+              min={0}
+              max={1}
+              step={0.1}
               mx={4}
               onChange={(value: number) => setMinPoseDetectConfidence(value)}
             >
@@ -119,10 +117,10 @@ const ContentGoogle = () => {
             <Text>1%</Text>
             <Slider
               aria-label='slider'
-              defaultValue={50}
-              min={1}
-              max={99}
-              step={1}
+              defaultValue={0.5}
+              min={0}
+              max={1}
+              step={0.1}
               mx={4}
               onChange={(value: number) => setMinPosePresenceConfidence(value)}
             >
@@ -143,10 +141,10 @@ const ContentGoogle = () => {
             <Text>1%</Text>
             <Slider
               aria-label='slider'
-              defaultValue={50}
-              min={1}
-              max={99}
-              step={1}
+              defaultValue={0.5}
+              min={0}
+              max={1}
+              step={0.1}
               mx={4}
               onChange={(value: number) => setMinTrackingConfidence(value)}
             >
