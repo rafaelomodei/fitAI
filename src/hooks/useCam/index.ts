@@ -14,21 +14,13 @@ const useCam = (): IUseCamOut => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const canvasCtxRef = useRef<CanvasRenderingContext2D | null>(null);
 
-  const { showSegmentation } = useMediaPipeStore();
-
-  const { runMediaPipe } = useMediaPipe();
-
   const startCam = () => {
     if (canvasRef.current) {
       canvasCtxRef.current = canvasRef.current.getContext('2d');
     }
+
     if (videoRef.current && canvasRef.current && canvasCtxRef.current)
-      runMediaPipe({
-        video: videoRef.current,
-        canvas: canvasRef.current,
-        canvasCtx: canvasCtxRef.current,
-        showSegmentation,
-      });
+      return { canvasRef, videoRef, canvasCtxRef, startCam, stopCam };
   };
 
   const stopCam = () => camera?.stop();

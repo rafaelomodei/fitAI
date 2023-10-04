@@ -26,21 +26,85 @@ import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import useCam from '../../hooks/useCam';
 import SideBar from '../../components/organisms/SideBar';
 import useMediaPipe from '../../hooks/useMediaPipe';
+import { useMediaPipeStore } from '../../providers/MediaPipe';
 
 const Training = () => {
   const [startTraining, setStartTraining] = useState<boolean>(false);
   const [counter, setCounter] = useState<number>(0);
 
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const canvasCtxRef = useRef<CanvasRenderingContext2D | null>(null);
+
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { canvasRef, videoRef, startCam, stopCam } = useCam();
+  // const { canvasRef, videoRef, startCam, stopCam } = useCam();
   const btnOpenMenuRef = useRef<HTMLButtonElement>(null);
-
   const { width, height } = useWindowDimensions();
+  const { runMediaPipe } = useMediaPipe();
+
+  const {
+    numPose,
+    showDrawLines,
+    showSegmentation,
+    minPoseDetectConfidence,
+    minPosePresenceConfidence,
+    minTrackingConfidence,
+  } = useMediaPipeStore();
+
+  const config = {
+    showDrawLines,
+    showSegmentation,
+    numPose,
+    minPoseDetectConfidence,
+    minPosePresenceConfidence,
+    minTrackingConfidence,
+  };
 
   useEffect(() => {
-    startCam();
-  }, []);
+    // startCam();
+    if (canvasRef.current) {
+      canvasCtxRef.current = canvasRef.current.getContext('2d');
+    }
+    if (videoRef.current && canvasRef.current && canvasCtxRef.current) {
+      try {
+        runMediaPipe({
+          video: videoRef.current,
+          canvas: canvasRef.current,
+          canvasCtx: canvasCtxRef.current,
+          showSegmentation,
+          config,
+        });
+      } catch {
+        console.info('Erro');
+      }
+    }
+  }, [
+    numPose,
+    showDrawLines,
+    showSegmentation,
+    minPoseDetectConfidence,
+    minPosePresenceConfidence,
+    minTrackingConfidence,
+  ]);
+
+  // useEffect(() => {
+  //   const startVideoCapture = async () => {
+  //     try {
+  //       const stream = await navigator.mediaDevices.getUserMedia({
+  //         video: true,
+  //       });
+
+  //       if (videoRef.current && stream) {
+  //         videoRef.current.srcObject = stream;
+  //         await videoRef.current.play();
+  //       }
+  //     } catch (error) {
+  //       console.error('Error accessing camera:', error);
+  //     }
+  //   };
+  //   startVideoCapture();
+  // }, []);
 
   return (
     <>
@@ -72,7 +136,7 @@ const Training = () => {
             size='sm'
             boxShadow='lg'
             onClick={() => {
-              stopCam();
+              // stopCam();
               navigate('/home');
             }}
             icon={<CloseIcon />}
