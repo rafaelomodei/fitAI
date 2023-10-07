@@ -41,7 +41,10 @@ const Training = () => {
   // const { canvasRef, videoRef, startCam, stopCam } = useCam();
   const btnOpenMenuRef = useRef<HTMLButtonElement>(null);
   const { width, height } = useWindowDimensions();
-  const { runMediaPipe } = useMediaPipe();
+  const { runMediaPipe } = useMediaPipe({
+    videoRef,
+    canvasRef,
+  });
 
   const {
     numPose,
@@ -68,13 +71,7 @@ const Training = () => {
     }
     if (videoRef.current && canvasRef.current && canvasCtxRef.current) {
       try {
-        runMediaPipe({
-          video: videoRef.current,
-          canvas: canvasRef.current,
-          canvasCtx: canvasCtxRef.current,
-          showSegmentation,
-          config,
-        });
+        runMediaPipe();
       } catch {
         console.info('Erro');
       }

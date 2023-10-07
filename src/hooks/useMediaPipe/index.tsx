@@ -5,7 +5,7 @@ import {
   FilesetResolver,
   DrawingUtils,
 } from '@mediapipe/tasks-vision';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useMediaPipeStore } from '../../providers/MediaPipe';
 import { onResults } from './utils';
 
@@ -21,55 +21,82 @@ interface IRunMediaPipe {
   video: HTMLVideoElement;
   canvas: HTMLCanvasElement;
   canvasCtx: CanvasRenderingContext2D;
-  showSegmentation: boolean;
-  config: IConfig;
+  // showSegmentation: boolean;
+  // config: IConfig;
 }
 
-const useMediaPipe = () => {
+interface IUseMediaPipeProps {
+  videoRef: React.RefObject<HTMLVideoElement>;
+  canvasRef: React.RefObject<HTMLCanvasElement | null>;
+  // showSegmentation: boolean;
+  // config: IConfig;
+}
+
+const useMediaPipe = (props: IUseMediaPipeProps) => {
+  const { videoRef, canvasRef } = props;
+
+  const canvasCtxRef = useRef<CanvasRenderingContext2D | null>(null);
+
+  useEffect(() => {
+    if (canvasRef.current)
+      canvasCtxRef.current = canvasRef.current.getContext('2d');
+  }, [canvasRef]);
+
   let lastVideoTime = -1;
-  async function predictWebcam(
-    video: HTMLVideoElement,
-    canvas: HTMLCanvasElement,
-    canvasCtx: CanvasRenderingContext2D,
-    poseLandmarker: PoseLandmarker,
-    drawingUtils: DrawingUtils
-  ) {
+  let poseLandmarker: PoseLandmarker | undefined = undefined;
+  let drawingUtils: DrawingUtils | undefined = undefined;
+
+  async function predictWebcam() {
+    if (!videoRef.current || !canvasRef.current || !canvasCtxRef.current)
+      return;
+
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    const canvasCtx = canvasCtxRef.current;
+
+    if (!drawingUtils) drawingUtils = new DrawingUtils(canvasCtx);
+
     canvas.style.height = `${video.height}`;
     video.style.height = `${video.height}`;
     canvas.style.width = `${video.width}`;
     video.style.width = `${video.width}`;
     // Now let's start detecting the stream.
 
-    await poseLandmarker.setOptions({ runningMode: 'VIDEO' });
+    await poseLandmarker?.setOptions({ runningMode: 'VIDEO' });
+
+    if (!poseLandmarker) return;
 
     let startTimeMs = performance.now();
 
     if (lastVideoTime !== video.currentTime) {
       lastVideoTime = video.currentTime;
-      poseLandmarker.detectForVideo(video, startTimeMs, (result) => {
-        canvasCtx.save();
+
+      poseLandmarker?.detectForVideo(video, startTimeMs, (result) => {
+        // canvasCtx.save();
         canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
         for (const landmark of result.landmarks) {
-          drawingUtils.drawLandmarks(landmark, {
+          drawingUtils?.drawLandmarks(landmark, {
             radius: (data) => DrawingUtils.lerp(data.from!.z, -0.15, 0.1, 5, 1),
           });
-          drawingUtils.drawConnectors(
+          drawingUtils?.drawConnectors(
             landmark,
             PoseLandmarker.POSE_CONNECTIONS
           );
         }
+
         canvasCtx.restore();
       });
-      console.info('aaa');
     }
 
-    window.requestAnimationFrame(() => predictWebcam);
+    video.play();
+
+    window.requestAnimationFrame(predictWebcam);
   }
 
-  const runMediaPipe = async (props: IRunMediaPipe) => {
-    const { video, canvas, canvasCtx, showSegmentation, config } = props;
+  const runMediaPipe = async () => {
     try {
-      // Check if webcam access is supported.
+     
+
       const hasGetUserMedia = () => !!navigator.mediaDevices?.getUserMedia;
 
       if (!hasGetUserMedia())
@@ -79,10 +106,10 @@ const useMediaPipe = () => {
         'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm'
       );
 
-      const poseLandmarker = await PoseLandmarker.createFromOptions(vision, {
+      poseLandmarker = await PoseLandmarker.createFromOptions(vision, {
         baseOptions: {
           modelAssetPath: `https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task`,
-          delegate: 'CPU',
+          delegate: 'GPU',
         },
         runningMode: 'VIDEO',
         numPoses: 2,
@@ -97,46 +124,40 @@ const useMediaPipe = () => {
       const constraints = {
         video: true,
       };
+      if (!videoRef.current) return;
+      const video = videoRef.current;
 
-      const drawingUtils = new DrawingUtils(canvasCtx);
+      navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+        video.srcObject = stream;
+        video.addEventListener('loadeddata', predictWebcam);
+      });
 
-      // await predictWebcam(
-      //   video,
-      //   canvas,
-      //   canvasCtx,
-      //   poseLandmarker,
-      //   drawingUtils
-      // );
-
-      // navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-      //   video.srcObject = stream;
-      //   video.addEventListener('loadeddata', async () => await predictWebcam(video,
-      //     canvas,
-      //     canvasCtx,
-      //     poseLandmarker,
-      //     drawingUtils));
-      // });
-
-      // video.removeEventListener('loadeddata', () =>
-      //   predictWebcam(video, canvas, canvasCtx, poseLandmarker, drawingUtils)
-      // );
-
-      try {
-        const mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-        });
-        video.srcObject = mediaStream;
-        video.addEventListener('loadeddata', async () =>  await predictWebcam(video, canvas, canvasCtx, poseLandmarker, drawingUtils));
-      } catch (e) {
-        console.error(e);
-      }
-      video.onloadedmetadata = async function (event) {
-        try {
-          await video.play();
-        } catch (e) {
-          console.error(e);
-        }
-      };
+      // try {
+      //   const mediaStream = await navigator.mediaDevices.getUserMedia({
+      //     video: true,
+      //   });
+      //   video.srcObject = mediaStream;
+      //   video.addEventListener(
+      //     'loadeddata',
+      //     async () =>
+      //       await predictWebcam(
+      //         video,
+      //         canvas,
+      //         canvasCtx,
+      //         poseLandmarker,
+      //         drawingUtils
+      //       )
+      //   );
+      // } catch (e) {
+      //   console.error(e);
+      // }
+      // video.onloadedmetadata = async function (event) {
+      //   try {
+      //     await video.play();
+      //   } catch (e) {
+      //     console.error(e);
+      //   }
+      // };
 
       // const pose = new Pose({
       //   locateFile: (file) => {
