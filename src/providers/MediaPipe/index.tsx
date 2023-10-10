@@ -1,8 +1,5 @@
-import { Camera } from '@mediapipe/camera_utils';
-import { Pose } from '@mediapipe/pose';
 import { createContext, useContext, useState } from 'react';
 import { IMediaPipeContext, IUseMediaPipeContext } from './interface';
-import { onResults } from '../../hooks/useMediaPipe/utils';
 
 export const MediaPipeContext = createContext({} as IUseMediaPipeContext);
 export const useMediaPipeStore = () => useContext(MediaPipeContext);
