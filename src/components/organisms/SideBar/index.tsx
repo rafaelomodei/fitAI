@@ -13,8 +13,8 @@ import {
   Tabs,
 } from '@chakra-ui/react';
 import { PNG } from '../../../assets/png';
-import ContentGoogle from './mediaPipe';
-import ContentOpenCV from './opencv';
+import { ContentMediaPipe } from './mediaPipe';
+import { ContentOpenCV } from './opencv';
 import { DrawerContent } from './styles';
 
 interface ISideBarProps {
@@ -51,7 +51,7 @@ const SideBar = (props: ISideBarProps) => {
             </TabList>
             <TabPanels>
               <TabPanel>
-                <ContentGoogle />
+                <ContentMediaPipe />
               </TabPanel>
               <TabPanel>
                 <ContentOpenCV />

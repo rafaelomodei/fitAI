@@ -1,7 +1,8 @@
 import { Camera } from '@mediapipe/camera_utils';
 import { drawConnectors, drawLandmarks } from '@mediapipe/drawing_utils';
 import { Pose, POSE_CONNECTIONS, Results } from '@mediapipe/pose';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useMediaPipeStore } from '../../providers/MediaPipe';
 
 interface IConfig {
   showDrawLines: boolean;
@@ -29,7 +30,18 @@ interface IUseMediaPipeProps {
 const useMediaPipe = (props: IUseMediaPipeProps) => {
   const { videoRef, canvasRef } = props;
 
+  const [hasDetected, setHasDetected] = useState<boolean>(true);
+
   const canvasCtxRef = useRef<CanvasRenderingContext2D | null>(null);
+
+  const {
+    selfieMode,
+    showDrawLines,
+    showSegmentation,
+    modelComplexity,
+    minTrackingConfidence,
+    minPoseDetectConfidence,
+  } = useMediaPipeStore();
 
   useEffect(() => {
     if (canvasRef.current)
@@ -40,12 +52,15 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
     if (!videoRef.current || !canvasRef.current || !canvasCtxRef.current)
       return;
 
-    if (!results.poseLandmarks || !results.poseWorldLandmarks) return;
+    if (!results.poseLandmarks || !results.poseWorldLandmarks) {
+      setHasDetected(false);
+      return;
+    }
+    setHasDetected(true);
 
     const width = videoRef.current.width;
     const height = videoRef.current.height;
     const canvasCtx = canvasCtxRef.current;
-    const showSegmentation = false;
 
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, width, height);
@@ -53,7 +68,7 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
 
     // Only overwrite existing pixels.
     canvasCtx.globalCompositeOperation = 'source-out';
-    canvasCtx.fillStyle = showSegmentation ? '#70e96a82' : '#0055FF00';
+    canvasCtx.fillStyle = showSegmentation ? '#ffbd6061' : '#0055FF00';
     canvasCtx?.fillRect(0, 0, width, height);
 
     // Only overwrite missing pixels.
@@ -62,15 +77,19 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
 
     canvasCtx.globalCompositeOperation = 'source-over';
 
-    drawConnectors(canvasCtx!, results.poseLandmarks, POSE_CONNECTIONS, {
-      color: '#e2e2e2',
-      lineWidth: 4,
-    });
+    if (showDrawLines)
+      drawConnectors(canvasCtx!, results.poseLandmarks, POSE_CONNECTIONS, {
+        color: '#C0CEFF',
+        lineWidth: 4,
+      });
 
-    drawLandmarks(canvasCtx!, results.poseLandmarks, {
-      color: '#7876f3',
-      lineWidth: 2,
-    });
+    if (showDrawLines)
+      drawLandmarks(canvasCtx!, results.poseLandmarks, {
+        color: '#6083FF',
+        lineWidth: 4,
+        radius: 6,
+        fillColor: '#78ff60f9'
+      });
     canvasCtx.restore();
   };
 
@@ -79,7 +98,7 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
       if (!videoRef.current || !canvasRef.current || !canvasCtxRef.current)
         return;
 
-      const videoElement = videoRef.current;
+      const video = videoRef.current;
 
       const pose = new Pose({
         locateFile: (file) => {
@@ -88,22 +107,23 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
       });
 
       pose.setOptions({
-        modelComplexity: 1,
-        smoothLandmarks: true,
+        modelComplexity: modelComplexity,
+        smoothLandmarks: showDrawLines,
         enableSegmentation: true,
-        smoothSegmentation: true,
-        minDetectionConfidence: 0.5,
-        minTrackingConfidence: 0.5,
+        smoothSegmentation: showSegmentation,
+        minDetectionConfidence: minPoseDetectConfidence,
+        minTrackingConfidence: minTrackingConfidence,
+        selfieMode: selfieMode,
       });
 
       pose.onResults(onResults);
 
-      const camera = new Camera(videoElement, {
+      const camera = new Camera(video, {
         onFrame: async () => {
-          await pose.send({ image: videoElement });
+          await pose.send({ image: video });
         },
-        width: videoElement!.width,
-        height: videoElement!.height,
+        width: video!.width,
+        height: video!.height,
       });
 
       pose.close();
@@ -113,7 +133,7 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
     }
   };
 
-  return { runMediaPipe };
+  return { hasDetected, runMediaPipe };
 };
 
 export default useMediaPipe;

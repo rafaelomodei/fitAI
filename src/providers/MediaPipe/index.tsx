@@ -1,32 +1,42 @@
 import { createContext, useContext, useState } from 'react';
-import { IMediaPipeContext, IUseMediaPipeContext } from './interface';
+import { IModelComplexity } from '../../hooks/useMediaPipe/interface';
+import { SESSION_STORAGE_MEDIA_PIPE } from './constants';
+import {
+  IMediaPipeContext,
+  IMediaPipeState,
+  IProviderMediaPipeContext,
+} from './interface';
 
-export const MediaPipeContext = createContext({} as IUseMediaPipeContext);
+export const MediaPipeContext = createContext({} as IProviderMediaPipeContext);
 export const useMediaPipeStore = () => useContext(MediaPipeContext);
 
 export const MediaPipeProvider = ({ children }: IMediaPipeContext) => {
-  const [showDrawLines, setShowDrawLines] = useState<boolean>(false);
+  const [selfieMode, setSelfieMode] = useState<boolean>(false);
+  const [showDrawLines, setShowDrawLines] = useState<boolean>(true);
   const [showSegmentation, setShowSegmentation] = useState<boolean>(false);
-  const [numPose, setNumPose] = useState<number>(1);
+  const [modelComplexity, setModelComplexity] = useState<IModelComplexity>(1);
   const [minPoseDetectConfidence, setMinPoseDetectConfidence] =
-    useState<number>(0.5);
-  const [minPosePresenceConfidence, setMinPosePresenceConfidence] =
     useState<number>(0.5);
   const [minTrackingConfidence, setMinTrackingConfidence] =
     useState<number>(0.5);
 
-  const providerValue: IUseMediaPipeContext = {
+  const sessionStorageItem = sessionStorage.getItem(SESSION_STORAGE_MEDIA_PIPE);
+  const sessionData = JSON.parse(
+    sessionStorageItem as string
+  ) as IMediaPipeState;
+
+  const providerValue: IProviderMediaPipeContext = {
+    selfieMode,
     showDrawLines,
     showSegmentation,
-    numPose,
-    minPoseDetectConfidence,
-    minPosePresenceConfidence,
+    modelComplexity,
     minTrackingConfidence,
+    minPoseDetectConfidence,
+    setSelfieMode,
     setShowDrawLines,
     setShowSegmentation,
-    setNumPose,
+    setModelComplexity,
     setMinPoseDetectConfidence,
-    setMinPosePresenceConfidence,
     setMinTrackingConfidence,
   };
 

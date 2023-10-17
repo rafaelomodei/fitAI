@@ -12,20 +12,32 @@ import {
 } from '@chakra-ui/react';
 import { useMediaPipeStore } from '../../../../providers/MediaPipe';
 
-const ContentGoogle = () => {
+export const ContentMediaPipe = () => {
   const {
-    showDrawLines,
+    selfieMode,
     showSegmentation,
-    setNumPose,
-    setShowDrawLines,
+    showDrawLines,
+    setSelfieMode,
     setShowSegmentation,
+    setShowDrawLines,
     setMinTrackingConfidence,
     setMinPoseDetectConfidence,
-    setMinPosePresenceConfidence,
   } = useMediaPipeStore();
 
   return (
     <Flex flexDirection='column' gap={8}>
+      <Flex mt={4} justifyContent='space-between'>
+        <Text fontWeight='bold' display='flex' alignItems='center' mr={4}>
+          Inverter câmera
+        </Text>
+        <Switch
+          id='selfieMode'
+          colorScheme='telegram'
+          isChecked={selfieMode}
+          onChange={() => setSelfieMode(!selfieMode)}
+        />
+      </Flex>
+
       <Flex mt={4} justifyContent='space-between'>
         <Text fontWeight='bold' display='flex' alignItems='center' mr={4}>
           Desenhar linhas
@@ -55,36 +67,12 @@ const ContentGoogle = () => {
         <Text fontWeight='bold' display='flex' alignItems='center' mr={4}>
           Modelo
         </Text>
-        <Select placeholder='Selecione o modelo' w='100%'>
-          <option value='option1'>Option 1</option>
-          <option value='option2'>Option 2</option>
-          <option value='option3'>Option 3</option>
+        <Select placeholder='(lite) Pose landmarker' w='100%' disabled={true}>
+          <option value='lite'>(lite) Pose landmarker</option>
         </Select>
       </Flex>
 
       <Flex flexDirection='column'>
-        <Text fontWeight='bold' display='flex' alignItems='center' mb={2}>
-          Número de pontos
-        </Text>
-        <Flex>
-          <Text>1</Text>
-          <Slider
-            aria-label='slider'
-            defaultValue={1}
-            min={1}
-            max={5}
-            step={1}
-            mx={4}
-            onChange={(value: number) => setNumPose(value)}
-          >
-            <SliderTrack>
-              <SliderFilledTrack />
-            </SliderTrack>
-            <SliderThumb />
-          </Slider>
-          <Text>5</Text>
-        </Flex>
-
         <Flex flexDirection='column' mt={10}>
           <Text fontWeight='bold' display='flex' alignItems='center' mb={2}>
             Confiança na detecção dos pontos
@@ -99,30 +87,6 @@ const ContentGoogle = () => {
               step={0.1}
               mx={4}
               onChange={(value: number) => setMinPoseDetectConfidence(value)}
-            >
-              <SliderTrack>
-                <SliderFilledTrack />
-              </SliderTrack>
-              <SliderThumb />
-            </Slider>
-            <Text>99%</Text>
-          </Flex>
-        </Flex>
-
-        <Flex flexDirection='column' mt={10}>
-          <Text fontWeight='bold' display='flex' alignItems='center' mb={2}>
-            Confiança nos pontos visíveis
-          </Text>
-          <Flex>
-            <Text>1%</Text>
-            <Slider
-              aria-label='slider'
-              defaultValue={0.5}
-              min={0}
-              max={1}
-              step={0.1}
-              mx={4}
-              onChange={(value: number) => setMinPosePresenceConfidence(value)}
             >
               <SliderTrack>
                 <SliderFilledTrack />
@@ -161,5 +125,3 @@ const ContentGoogle = () => {
     </Flex>
   );
 };
-
-export default ContentGoogle;

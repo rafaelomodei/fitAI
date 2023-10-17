@@ -1,3 +1,5 @@
+import { IModelComplexity } from '../../hooks/useMediaPipe/interface';
+
 export interface ITraining {
   id: number;
   name: string;
@@ -6,18 +8,21 @@ export interface ITraining {
   gif: string;
 }
 
-export interface IUseMediaPipeContext {
+export interface IMediaPipeState {
+  selfieMode: boolean;
   showDrawLines: boolean;
   showSegmentation: boolean;
-  numPose: number;
-  minPoseDetectConfidence: number;
-  minPosePresenceConfidence: number;
+  modelComplexity: IModelComplexity;
   minTrackingConfidence: number;
+  minPoseDetectConfidence: number;
+}
+
+export interface IProviderMediaPipeContext extends IMediaPipeState {
+  setSelfieMode: React.Dispatch<React.SetStateAction<boolean>>;
   setShowDrawLines: React.Dispatch<React.SetStateAction<boolean>>;
   setShowSegmentation: React.Dispatch<React.SetStateAction<boolean>>;
-  setNumPose: React.Dispatch<React.SetStateAction<number>>;
+  setModelComplexity: React.Dispatch<React.SetStateAction<IModelComplexity>>;
   setMinPoseDetectConfidence: React.Dispatch<React.SetStateAction<number>>;
-  setMinPosePresenceConfidence: React.Dispatch<React.SetStateAction<number>>;
   setMinTrackingConfidence: React.Dispatch<React.SetStateAction<number>>;
 }
 

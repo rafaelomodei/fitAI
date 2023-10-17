@@ -47,21 +47,19 @@ const Training = () => {
   });
 
   const {
-    numPose,
     showDrawLines,
     showSegmentation,
-    minPoseDetectConfidence,
-    minPosePresenceConfidence,
+    modelComplexity,
     minTrackingConfidence,
+    minPoseDetectConfidence,
   } = useMediaPipeStore();
 
   const config = {
     showDrawLines,
     showSegmentation,
-    numPose,
-    minPoseDetectConfidence,
-    minPosePresenceConfidence,
+    modelComplexity,
     minTrackingConfidence,
+    minPoseDetectConfidence,
   };
 
   useEffect(() => {
@@ -77,12 +75,11 @@ const Training = () => {
       }
     }
   }, [
-    numPose,
     showDrawLines,
     showSegmentation,
-    minPoseDetectConfidence,
-    minPosePresenceConfidence,
+    modelComplexity,
     minTrackingConfidence,
+    minPoseDetectConfidence,
   ]);
 
   // useEffect(() => {

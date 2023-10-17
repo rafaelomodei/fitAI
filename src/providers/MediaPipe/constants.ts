@@ -1,0 +1,3 @@
+const SESSION_STORAGE_MEDIA_PIPE = 'stateMediaPipe';
+
+export { SESSION_STORAGE_MEDIA_PIPE };
