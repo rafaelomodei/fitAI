@@ -7,6 +7,8 @@ export const TrainingContext = createContext({} as IUseTrainingContext);
 export const useTrainingStore = () => useContext(TrainingContext);
 
 export const TrainingProvider = ({ children }: ITrainingContext) => {
+  const [isStartedTraining, setIsStartedTraining] = useState<boolean>(false);
+
   const { isMobile } = useDevices();
 
   const handleInitialState = (): ITraining | undefined => {
@@ -18,7 +20,14 @@ export const TrainingProvider = ({ children }: ITrainingContext) => {
   >(handleInitialState());
 
   return (
-    <TrainingContext.Provider value={{ trainingSelected, setTrainingSelected }}>
+    <TrainingContext.Provider
+      value={{
+        trainingSelected,
+        isStartedTraining,
+        setIsStartedTraining,
+        setTrainingSelected,
+      }}
+    >
       {children}
     </TrainingContext.Provider>
   );

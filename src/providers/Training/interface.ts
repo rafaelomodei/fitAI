@@ -8,6 +8,8 @@ export interface ITraining {
 
 export interface IUseTrainingContext {
   trainingSelected?: ITraining;
+  isStartedTraining: boolean;
+  setIsStartedTraining: React.Dispatch<React.SetStateAction<boolean>>;
   setTrainingSelected: React.Dispatch<
     React.SetStateAction<ITraining | undefined>
   >;
