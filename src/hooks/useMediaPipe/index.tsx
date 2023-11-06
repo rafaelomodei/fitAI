@@ -3,6 +3,13 @@ import { drawConnectors, drawLandmarks } from '@mediapipe/drawing_utils';
 import { Pose, POSE_CONNECTIONS, Results } from '@mediapipe/pose';
 import { useEffect, useRef, useState } from 'react';
 import { useMediaPipeStore } from '../../providers/MediaPipe';
+import { useTrainingStore } from '../../providers/Training';
+import {
+  angleBetweenVectors,
+  distanceDBetweenTheTwoStraightLines,
+  euclideanDistance,
+} from '../../utils/vector';
+import { drawing } from './utils';
 
 interface IConfig {
   showDrawLines: boolean;
@@ -30,9 +37,13 @@ interface IUseMediaPipeProps {
 const useMediaPipe = (props: IUseMediaPipeProps) => {
   const { videoRef, canvasRef } = props;
 
-  const [hasDetected, setHasDetected] = useState<boolean>(true);
+  const [hasDetected, setHasDetected] = useState<boolean>(false);
+  const [isLoadingMediaPipe, setIsLoadingMediaPipe] = useState<boolean>(true);
 
   const canvasCtxRef = useRef<CanvasRenderingContext2D | null>(null);
+  let pose: Pose | undefined = undefined;
+
+  const { isStartedTraining } = useTrainingStore();
 
   const {
     selfieMode,
@@ -56,41 +67,59 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
       setHasDetected(false);
       return;
     }
+
     setHasDetected(true);
+    setIsLoadingMediaPipe(false);
+
+    // console.info('poseLandmarks: ', results.poseLandmarks);
+    // console.info('poseWorldLandmarks: ', results.poseWorldLandmarks);
+
+    const vectorA = {
+      x: results.poseLandmarks[12].x,
+      y: results.poseLandmarks[12].y,
+      z: results.poseLandmarks[12].z,
+    };
+
+    const vectorB = {
+      x: results.poseLandmarks[14].x,
+      y: results.poseLandmarks[14].y,
+      z: results.poseLandmarks[14].z,
+    };
+
+    const vectorC = {
+      x: results.poseLandmarks[16].x,
+      y: results.poseLandmarks[16].y,
+      z: results.poseLandmarks[16].z,
+    };
+
+    // console.info('vectorA: ', vectorA);
+    // console.info('vectorB: ', vectorB);
+
+    const angle = angleBetweenVectors({ vectorA, vectorB, vectorC });
+    const d = distanceDBetweenTheTwoStraightLines(vectorA, vectorC);
+
+    const D = d * Math.sin(angle);
+    const magnitudeD = Math.sqrt(D);
+    console.info('magnitudeD: ', magnitudeD);
+
+    // console.info('angle: ', (angle * 180) / Math.PI);
+
+    // const distance = euclideanDistance({ vectorA, vectorB, vectorC });
+
+    // console.info('distance: ', distance);
 
     const width = videoRef.current.width;
     const height = videoRef.current.height;
     const canvasCtx = canvasCtxRef.current;
 
-    canvasCtx.save();
-    canvasCtx.clearRect(0, 0, width, height);
-    canvasCtx.drawImage(results.segmentationMask, 0, 0, width, height);
-
-    // Only overwrite existing pixels.
-    canvasCtx.globalCompositeOperation = 'source-out';
-    canvasCtx.fillStyle = showSegmentation ? '#ffbd6061' : '#0055FF00';
-    canvasCtx?.fillRect(0, 0, width, height);
-
-    // Only overwrite missing pixels.
-    canvasCtx.globalCompositeOperation = 'destination-atop';
-    canvasCtx.drawImage(results.image, 0, 0, width, height);
-
-    canvasCtx.globalCompositeOperation = 'source-over';
-
-    if (showDrawLines)
-      drawConnectors(canvasCtx!, results.poseLandmarks, POSE_CONNECTIONS, {
-        color: '#C0CEFF',
-        lineWidth: 4,
-      });
-
-    if (showDrawLines)
-      drawLandmarks(canvasCtx!, results.poseLandmarks, {
-        color: '#6083FF',
-        lineWidth: 4,
-        radius: 6,
-        fillColor: '#78ff60f9'
-      });
-    canvasCtx.restore();
+    drawing({
+      showSegmentation,
+      showDrawLines,
+      width,
+      height,
+      canvasCtx,
+      results,
+    });
   };
 
   const runMediaPipe = () => {
@@ -100,13 +129,25 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
 
       const video = videoRef.current;
 
-      const pose = new Pose({
+      const camera = new Camera(video, {
+        onFrame: async () => {
+          await pose?.send({ image: video });
+        },
+        width: video!.width,
+        height: video!.height,
+      });
+
+      camera.start();
+
+      if (!isStartedTraining) return;
+
+      pose = new Pose({
         locateFile: (file) => {
           return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
         },
       });
 
-      pose.setOptions({
+      pose?.setOptions({
         modelComplexity: modelComplexity,
         smoothLandmarks: showDrawLines,
         enableSegmentation: true,
@@ -116,24 +157,24 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
         selfieMode: selfieMode,
       });
 
-      pose.onResults(onResults);
+      pose?.onResults(onResults);
 
-      const camera = new Camera(video, {
-        onFrame: async () => {
-          await pose.send({ image: video });
-        },
-        width: video!.width,
-        height: video!.height,
-      });
+      // const camera = new Camera(video, {
+      //   onFrame: async () => {
+      //     await pose.send({ image: video });
+      //   },
+      //   width: video!.width,
+      //   height: video!.height,
+      // });
 
-      pose.close();
+      pose?.close();
       camera.start();
     } catch {
       console.info('error');
     }
   };
 
-  return { hasDetected, runMediaPipe };
+  return { hasDetected, isLoadingMediaPipe, runMediaPipe };
 };
 
 export default useMediaPipe;
