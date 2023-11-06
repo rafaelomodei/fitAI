@@ -7,8 +7,11 @@ import useDevices from '../../hooks/useDevicesHook';
 import { useEffect, useState } from 'react';
 import useMenu from '../../hooks/useMenu';
 import { useTrainingStore } from '../../providers/Training';
+import { UploadTraining } from '../UploadTraining';
 
 const Home = () => {
+  const [analyzeTraining, setAnalyzeTraining] = useState<boolean>(false);
+
   const { isOpenMenu, setIsOpenMenu } = useMenu();
   const { trainingSelected } = useTrainingStore();
   const { isMobile } = useDevices();
@@ -41,7 +44,13 @@ const Home = () => {
             />
           </Flex>
         )}
-        {!isOpenMenu && <ContentTraining />}
+        {analyzeTraining ? (
+          <UploadTraining setAnalyzeTraining={setAnalyzeTraining} />
+        ) : (
+          !isOpenMenu && (
+            <ContentTraining setAnalyzeTraining={setAnalyzeTraining} />
+          )
+        )}
       </Flex>
     </Flex>
   );
