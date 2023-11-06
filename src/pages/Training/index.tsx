@@ -1,21 +1,8 @@
 import {
   Button,
   Center,
-  Divider,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerHeader,
-  DrawerOverlay,
   Flex,
-  Heading,
   IconButton,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
   useDisclosure,
 } from '@chakra-ui/react';
 import { LegacyRef, useEffect, useRef, useState } from 'react';
@@ -27,9 +14,11 @@ import useCam from '../../hooks/useCam';
 import SideBar from '../../components/organisms/SideBar';
 import useMediaPipe from '../../hooks/useMediaPipe';
 import { useMediaPipeStore } from '../../providers/MediaPipe';
+import { AlertNotHasDetected } from '../../components/organisms/AlertNotHasDetected';
+import { useTrainingStore } from '../../providers/Training';
+import { Loading } from '../../components/organisms/Loading';
 
 const Training = () => {
-  const [startTraining, setStartTraining] = useState<boolean>(false);
   const [counter, setCounter] = useState<number>(0);
 
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -41,10 +30,12 @@ const Training = () => {
   // const { canvasRef, videoRef, startCam, stopCam } = useCam();
   const btnOpenMenuRef = useRef<HTMLButtonElement>(null);
   const { width, height } = useWindowDimensions();
-  const { runMediaPipe } = useMediaPipe({
+  const { hasDetected, isLoadingMediaPipe, runMediaPipe } = useMediaPipe({
     videoRef,
     canvasRef,
   });
+
+  const { isStartedTraining, setIsStartedTraining } = useTrainingStore();
 
   const {
     showDrawLines,
@@ -64,17 +55,13 @@ const Training = () => {
 
   useEffect(() => {
     // startCam();
-    if (canvasRef.current) {
+    if (canvasRef.current)
       canvasCtxRef.current = canvasRef.current.getContext('2d');
-    }
-    if (videoRef.current && canvasRef.current && canvasCtxRef.current) {
-      try {
-        runMediaPipe();
-      } catch {
-        console.info('Erro');
-      }
-    }
+
+    if (videoRef.current && canvasRef.current && canvasCtxRef.current)
+      runMediaPipe();
   }, [
+    isStartedTraining,
     showDrawLines,
     showSegmentation,
     modelComplexity,
@@ -100,6 +87,12 @@ const Training = () => {
   //   startVideoCapture();
   // }, []);
 
+  const handleFeedback = () => {
+    if (isStartedTraining && isLoadingMediaPipe) return <Loading />;
+
+    if (isStartedTraining && !hasDetected) return <AlertNotHasDetected />;
+  };
+
   return (
     <>
       <Video
@@ -107,13 +100,15 @@ const Training = () => {
         className='input_video'
         width={width}
         height={height}
-      ></Video>
+      />
       <Canvas
         ref={canvasRef as LegacyRef<HTMLCanvasElement>}
         className='output_canvas'
         width={width}
         height={height}
-      ></Canvas>
+      />
+      {handleFeedback()}
+
       <Flex
         w='100%'
         h='calc(100vh - 20px)'
@@ -131,7 +126,7 @@ const Training = () => {
             boxShadow='lg'
             onClick={() => {
               // stopCam();
-              navigate('/home');
+              navigate('/inicio');
             }}
             icon={<CloseIcon />}
           />
@@ -147,7 +142,7 @@ const Training = () => {
         </Header>
 
         <Footer>
-          {startTraining ? (
+          {isStartedTraining ? (
             <IconButton
               isRound={true}
               variant='solid'
@@ -161,7 +156,11 @@ const Training = () => {
               icon={<Center>{counter}</Center>}
             />
           ) : (
-            <Button size='lg' onClick={() => setStartTraining(true)}>
+            <Button
+              size='lg'
+              isDisabled={!hasDetected && isStartedTraining}
+              onClick={() => setIsStartedTraining(true)}
+            >
               Iniciar treino
             </Button>
           )}

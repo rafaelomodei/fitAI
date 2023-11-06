@@ -13,7 +13,7 @@ const Start = () => {
           <Heading fontSize={96}>FitAi</Heading>
           <Heading size='sm'>Seu personal trainer virtual</Heading>
         </Center>
-        <Button size='lg' px={16} onClick={() => navigate('/home')}>
+        <Button size='lg' px={16} onClick={() => navigate('/inicio')}>
           Iniciar
         </Button>
       </Center>
