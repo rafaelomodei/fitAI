@@ -3,7 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import useDevices from '../../../hooks/useDevicesHook';
 import { useTrainingStore } from '../../../providers/Training';
 
-const ContentTraining = () => {
+interface IContentTraining {
+  setAnalyzeTraining: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const ContentTraining = (props: IContentTraining) => {
+  const { setAnalyzeTraining } = props;
   const { trainingSelected } = useTrainingStore();
   const { isMobile, isTablet, isDesktop } = useDevices();
   const navigate = useNavigate();
@@ -35,18 +40,30 @@ const ContentTraining = () => {
           backgroundRepeat='no-repeat'
           backgroundImage={trainingSelected?.gif}
         />
-        <Button
-          w='100%'
-          bg='primary'
-          color='white'
-          size='lg'
-          mt={16}
-          mb={9}
-          _hover={{ backgroundColor: 'primary90' }}
-          onClick={() => navigate('/training')}
-        >
-          Iniciar
-        </Button>
+        <Flex flexDirection='column' w='100%' gap={4}>
+          <Button
+            w='100%'
+            bg='primary'
+            color='white'
+            size='lg'
+            mt={16}
+            _hover={{ backgroundColor: 'primary90' }}
+            onClick={() => navigate('/treino')}
+          >
+            Iniciar treino
+          </Button>
+          <Button
+            w='100%'
+            variant='outline'
+            color='primary90'
+            borderColor='primary90'
+            size='lg'
+            mb={9}
+            onClick={() => setAnalyzeTraining(true)}
+          >
+            Analizar treino
+          </Button>
+        </Flex>
       </Flex>
     </Flex>
   );
