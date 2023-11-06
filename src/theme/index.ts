@@ -12,6 +12,15 @@ const theme = extendTheme({
     primary90: '#7694FF',
     primary30: '#C0CEFF',
     primary10: '#F1F4FF',
+    error: '#E36363',
+    error70: '#DA7979',
+  },
+  styles: {
+    global: {
+      body: {
+        color: '#575361',
+      },
+    },
   },
 });
 
