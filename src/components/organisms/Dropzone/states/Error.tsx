@@ -1,6 +1,6 @@
 import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 import { useLottie } from 'lottie-react';
-import { LORD_ICON } from '../../assets/lordIcon';
+import { LORD_ICON } from '../../../../assets/lordIcon';
 
 const Error = () => {
   const optionsUploadFileIcon = {
@@ -29,7 +29,8 @@ const Error = () => {
         Error ao efetuar o upload!
       </Heading>
       <Text fontSize='sm' textAlign='center' color='gray'>
-        Clique em <strong>Tentar novamente</strong>.
+        <strong>Arraste</strong> ou<strong> clique aqui</strong> para tentar
+        novamente
       </Text>
     </Flex>
   );

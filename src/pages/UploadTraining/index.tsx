@@ -2,26 +2,12 @@ import { ArrowBackIcon, WarningTwoIcon } from '@chakra-ui/icons';
 import { Box, Button, CardBody, Flex, Heading, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Dropzone } from '../../components/organisms/Dropzone';
 import useDevices from '../../hooks/useDevicesHook';
 import { useTrainingStore } from '../../providers/Training';
-import { Error } from './Error';
-import { Loading } from './Loading';
-import { Card, Container } from './style';
-import { Success } from './Success';
-import { Upload } from './Upload';
-
-enum EStatusUploadFile {
-  UPLOAD = 'UPLOAD',
-  SUCCESS = 'SUCCESS',
-  ERROR = 'ERROR',
-  LOADING = 'LOADING',
-}
-const stepsUploadFile = {
-  UPLOAD: <Upload />,
-  SUCCESS: <Success />,
-  ERROR: <Error />,
-  LOADING: <Loading />,
-};
+import { Error } from '../../components/organisms/Dropzone/states/Error';
+import { Container } from './style';
+import { EStatusUploadFile } from '../../components/organisms/Dropzone/interface';
 
 interface IUploadTraining {
   setAnalyzeTraining: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,46 +17,13 @@ const UploadTraining = (props: IUploadTraining) => {
   const { setAnalyzeTraining } = props;
 
   const [statusUploadFile, setStatusUploadFile] = useState<EStatusUploadFile>(
-    EStatusUploadFile.SUCCESS
+    EStatusUploadFile.UPLOAD
   );
 
   const navigate = useNavigate();
   const { isMobile } = useDevices();
   const { trainingSelected } = useTrainingStore();
 
-  const handleButton = () => {
-    const isSuccess = statusUploadFile === EStatusUploadFile.SUCCESS;
-    const isError = statusUploadFile === EStatusUploadFile.ERROR;
-
-    if (isSuccess)
-      return (
-        <Button
-          w={isMobile ? '100%' : 'min-content'}
-          bg='primary'
-          color='white'
-          size='lg'
-          mt={4}
-          _hover={{ backgroundColor: 'primary90' }}
-          onClick={() => navigate('/analise-treino')}
-        >
-          Iniciar analise do treino
-        </Button>
-      );
-    if (isError)
-      return (
-        <Button
-          w={isMobile ? '100%' : 'min-content'}
-          bg='primary'
-          color='white'
-          size='lg'
-          mt={4}
-          _hover={{ backgroundColor: 'primary90' }}
-          onClick={() => setStatusUploadFile(EStatusUploadFile.UPLOAD)}
-        >
-          Tentar novamente
-        </Button>
-      );
-  };
   return (
     <Container>
       <Button
@@ -99,12 +52,25 @@ const UploadTraining = (props: IUploadTraining) => {
           selecionado na barra lateral esquerda para análise precisa.
         </Text>
       </Flex>
-      <Card p={4}>
-        <CardBody display='flex' flexDirection='column' alignItems='center'>
-          {stepsUploadFile[statusUploadFile]}
-        </CardBody>
-      </Card>
-      {handleButton()}
+      <Dropzone
+        statusUploadFile={statusUploadFile}
+        setStatusUploadFile={setStatusUploadFile}
+      />
+      {/* {stepsUploadFile[statusUploadFile]} */}
+
+      {statusUploadFile === EStatusUploadFile.SUCCESS && (
+        <Button
+          w={isMobile ? '100%' : 'min-content'}
+          bg='primary'
+          color='white'
+          size='lg'
+          mt={4}
+          _hover={{ backgroundColor: 'primary90' }}
+          onClick={() => navigate('/analise-treino')}
+        >
+          Iniciar analise do treino
+        </Button>
+      )}
       <Box h={4} />
     </Container>
   );

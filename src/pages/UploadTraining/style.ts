@@ -1,4 +1,4 @@
-import { Card as CardCK, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import styled from 'styled-components';
 import { theme } from '../../theme';
 
@@ -17,13 +17,5 @@ export const Container = styled(Flex)`
 
   @media screen and (min-width: 768px) {
     padding: 0px 64px;
-  }
-`;
-
-export const Card = styled(CardCK)`
-  && {
-    background-color: ${theme.colors.primary10};
-    box-shadow: none;
-    border: 1px dashed ${theme.colors.primary};
   }
 `;

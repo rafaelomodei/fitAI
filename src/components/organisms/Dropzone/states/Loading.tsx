@@ -1,6 +1,6 @@
 import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 import { useLottie } from 'lottie-react';
-import { LORD_ICON } from '../../assets/lordIcon';
+import { LORD_ICON } from '../../../../assets/lordIcon';
 
 const Loading = () => {
   const optionsUploadFileIcon = {

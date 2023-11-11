@@ -14,6 +14,7 @@ const theme = extendTheme({
     primary10: '#F1F4FF',
     error: '#E36363',
     error70: '#DA7979',
+    success: '#6BAE76',
   },
   styles: {
     global: {

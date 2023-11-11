@@ -1,10 +1,10 @@
 import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 import { useLottie } from 'lottie-react';
-import { LORD_ICON } from '../../assets/lordIcon';
+import { LORD_ICON } from '../../../../assets/lordIcon';
 
-const Success = () => {
+const Reject = () => {
   const optionsUploadFileIcon = {
-    animationData: LORD_ICON.CheckSuccess,
+    animationData: LORD_ICON.Error,
     loop: false,
     autoplay: true,
   };
@@ -24,16 +24,15 @@ const Success = () => {
       >
         {View}
       </Box>
-      <Box h={10}/>
-
-      <Heading size='md' color='primary' textAlign='center'>
-        Upload efetuado com sucesso!
+      <Box h={10} />
+      <Heading size='md' color='error70' textAlign='center'>
+        Formato invalido!
       </Heading>
       <Text fontSize='sm' textAlign='center' color='gray'>
-        Clique em <strong>Iniciar analise do treino</strong>.
+        Esse formato de arquivo não é suportado
       </Text>
     </Flex>
   );
 };
 
-export { Success };
+export { Reject };
