@@ -3,6 +3,7 @@ import { AnalyzeTraining } from '../pages/AnalyzeTraining';
 import { Home } from '../pages/Home';
 import { Start } from '../pages/Start';
 import { Training } from '../pages/Training';
+import { Container } from './container';
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/analise-treino',
-    element: <AnalyzeTraining />,
+    element: (
+      <Container>
+        <AnalyzeTraining />
+      </Container>
+    ),
   },
 ]);
 
