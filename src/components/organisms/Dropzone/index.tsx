@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDropzone, Accept } from 'react-dropzone';
 import { EStatusUploadFile } from './interface';
 import { Error } from './states/Error';
@@ -20,14 +20,20 @@ const stepsUploadFile = {
 interface IDropzone {
   statusUploadFile: EStatusUploadFile;
   setStatusUploadFile: React.Dispatch<React.SetStateAction<EStatusUploadFile>>;
+  setFile: React.Dispatch<React.SetStateAction<File | null>>;
 }
 
 const Dropzone = (props: IDropzone) => {
-  const { statusUploadFile, setStatusUploadFile } = props;
+  const { statusUploadFile, setStatusUploadFile, setFile } = props;
 
   const acceptFormatFile: Accept = {
     'video/mp4': ['.mp4'],
   };
+
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    const file = acceptedFiles[0];
+    setFile(file);
+  }, []);
 
   const {
     getRootProps,
@@ -36,7 +42,7 @@ const Dropzone = (props: IDropzone) => {
     isDragReject,
     fileRejections,
     acceptedFiles,
-  } = useDropzone({ accept: acceptFormatFile });
+  } = useDropzone({ onDrop, accept: acceptFormatFile });
 
   const handleStepUploadFile = () => {
     if (isDragReject) return EStatusUploadFile.DRAG_REJECT;

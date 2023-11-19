@@ -1,13 +1,13 @@
-import { ArrowBackIcon, WarningTwoIcon } from '@chakra-ui/icons';
-import { Box, Button, CardBody, Flex, Heading, Text } from '@chakra-ui/react';
+import { WarningTwoIcon } from '@chakra-ui/icons';
+import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Dropzone } from '../../components/organisms/Dropzone';
 import useDevices from '../../hooks/useDevicesHook';
 import { useTrainingStore } from '../../providers/Training';
-import { Error } from '../../components/organisms/Dropzone/states/Error';
 import { Container } from './style';
 import { EStatusUploadFile } from '../../components/organisms/Dropzone/interface';
+import { ButtonBack } from '../../components/molecules/ButtonBack';
 
 interface IUploadTraining {
   setAnalyzeTraining: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,6 +15,8 @@ interface IUploadTraining {
 
 const UploadTraining = (props: IUploadTraining) => {
   const { setAnalyzeTraining } = props;
+
+  const [file, setFile] = useState<File | null>(null);
 
   const [statusUploadFile, setStatusUploadFile] = useState<EStatusUploadFile>(
     EStatusUploadFile.UPLOAD
@@ -26,14 +28,7 @@ const UploadTraining = (props: IUploadTraining) => {
 
   return (
     <Container>
-      <Button
-        variant='link'
-        w='min-content'
-        color='primary'
-        onClick={() => setAnalyzeTraining(false)}
-      >
-        <ArrowBackIcon mr={2} /> Voltar
-      </Button>
+      <ButtonBack onClick={() => setAnalyzeTraining(false)} />
       <Flex w='100%' flexDirection='column'>
         <Heading size='md'>
           {`${trainingSelected?.name} -  Analise de treino`}
@@ -55,6 +50,7 @@ const UploadTraining = (props: IUploadTraining) => {
       <Dropzone
         statusUploadFile={statusUploadFile}
         setStatusUploadFile={setStatusUploadFile}
+        setFile={setFile}
       />
       {/* {stepsUploadFile[statusUploadFile]} */}
 
@@ -66,7 +62,11 @@ const UploadTraining = (props: IUploadTraining) => {
           size='lg'
           mt={4}
           _hover={{ backgroundColor: 'primary90' }}
-          onClick={() => navigate('/analise-treino')}
+          onClick={() =>
+            navigate('/analise-treino', {
+              state: { file: file },
+            })
+          }
         >
           Iniciar analise do treino
         </Button>

@@ -1,6 +1,5 @@
 import { Flex } from '@chakra-ui/react';
 import styled from 'styled-components';
-import { theme } from '../../theme';
 
 export const Container = styled(Flex)`
   width: 100%;
