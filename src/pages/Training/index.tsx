@@ -30,7 +30,7 @@ const Training = () => {
   // const { canvasRef, videoRef, startCam, stopCam } = useCam();
   const btnOpenMenuRef = useRef<HTMLButtonElement>(null);
   const { width, height } = useWindowDimensions();
-  const { hasDetected, isLoadingMediaPipe, runMediaPipe } = useMediaPipe({
+  const { hasDetected, isLoadingMediaPipe, runCamMediaPipe } = useMediaPipe({
     videoRef,
     canvasRef,
   });
@@ -59,7 +59,7 @@ const Training = () => {
       canvasCtxRef.current = canvasRef.current.getContext('2d');
 
     if (videoRef.current && canvasRef.current && canvasCtxRef.current)
-      runMediaPipe();
+      runCamMediaPipe();
   }, [
     isStartedTraining,
     showDrawLines,

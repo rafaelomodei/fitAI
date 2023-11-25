@@ -1,7 +1,7 @@
 import { Camera } from '@mediapipe/camera_utils';
 import { drawConnectors, drawLandmarks } from '@mediapipe/drawing_utils';
 import { Pose, POSE_CONNECTIONS, Results } from '@mediapipe/pose';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useMediaPipeStore } from '../../providers/MediaPipe';
 import { useTrainingStore } from '../../providers/Training';
 import {
@@ -122,7 +122,7 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
     });
   };
 
-  const runMediaPipe = () => {
+  const runCamMediaPipe = () => {
     try {
       if (!videoRef.current || !canvasRef.current || !canvasCtxRef.current)
         return;
@@ -157,6 +157,8 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
         selfieMode: selfieMode,
       });
 
+      console.info('passando aqui');
+
       pose?.onResults(onResults);
 
       // const camera = new Camera(video, {
@@ -174,7 +176,49 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
     }
   };
 
-  return { hasDetected, isLoadingMediaPipe, runMediaPipe };
+  const runMediaPipe = () => {
+    try {
+      // requestAnimationFrame(() => {
+      if (!videoRef.current || !canvasRef.current || !canvasCtxRef.current)
+        return;
+
+      const video = videoRef.current;
+      console.info('runMediaPipe:: ', video);
+      // const animation = () => {
+      pose = new Pose({
+        locateFile: (file) => {
+          return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
+        },
+      });
+      pose?.setOptions({
+        modelComplexity: modelComplexity,
+        smoothLandmarks: showDrawLines,
+        enableSegmentation: true,
+        smoothSegmentation: showSegmentation,
+        minDetectionConfidence: minPoseDetectConfidence,
+        minTrackingConfidence: minTrackingConfidence,
+        selfieMode: selfieMode,
+      });
+
+      const animation = async () => {
+        canvasCtxRef.current?.clearRect(0, 0, 640, 360);
+        await pose?.send({ image: video });
+
+        pose?.onResults(onResults);
+        requestAnimationFrame(animation);
+      };
+
+      animation();
+      // };
+      // });
+
+      // pose?.close();
+    } catch {
+      console.info('error');
+    }
+  };
+
+  return { hasDetected, isLoadingMediaPipe, runMediaPipe, runCamMediaPipe };
 };
 
 export default useMediaPipe;
