@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Heading,
-  Spinner,
-  Text,
-} from '@chakra-ui/react';
+import { Flex, Heading, Text } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ButtonBack } from '../../components/molecules/ButtonBack';
@@ -41,9 +33,9 @@ const AnalyzeTraining = () => {
     </Flex>
   );
 
+  setTimeout(() => setStart(true), 300);
+
   useEffect(() => {
-    // startCam();
-    console.info('useEffect');
     if (canvasRef.current)
       canvasCtxRef.current = canvasRef.current.getContext('2d');
 
@@ -53,9 +45,7 @@ const AnalyzeTraining = () => {
       canvasCtxRef.current &&
       start
     ) {
-      console.info('Video:: ', start ? 'Iniciado' : 'Parou');
       runMediaPipe();
-      // requestAnimationFrame(runMediaPipe);
     }
   }, [start]);
 
@@ -74,7 +64,7 @@ const AnalyzeTraining = () => {
         )}
         <ContainerInfo>
           <Heading size='lg'>Analise de treino</Heading>
-          <Text>{`Assista o seu video de trainamento de ${trainingSelected?.name}`}</Text>
+
           <Heading size='md' mb={2} mt={8}>
             Informações gerais
           </Heading>
@@ -93,7 +83,6 @@ const AnalyzeTraining = () => {
             <Text fontWeight='600'>Repetições: </Text>
             <Text ml={2}> 20x</Text>
           </Flex>
-          <Button onClick={() => setStart(!start)}> Start</Button>
         </ContainerInfo>
       </Container>
     </Flex>

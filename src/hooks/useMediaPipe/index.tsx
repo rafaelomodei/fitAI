@@ -178,13 +178,11 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
 
   const runMediaPipe = () => {
     try {
-      // requestAnimationFrame(() => {
       if (!videoRef.current || !canvasRef.current || !canvasCtxRef.current)
         return;
 
       const video = videoRef.current;
       console.info('runMediaPipe:: ', video);
-      // const animation = () => {
       pose = new Pose({
         locateFile: (file) => {
           return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
@@ -207,12 +205,9 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
         pose?.onResults(onResults);
         requestAnimationFrame(animation);
       };
+      pose?.close();
 
       animation();
-      // };
-      // });
-
-      // pose?.close();
     } catch {
       console.info('error');
     }
