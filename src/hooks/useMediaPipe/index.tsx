@@ -43,7 +43,8 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
   const canvasCtxRef = useRef<CanvasRenderingContext2D | null>(null);
   let pose: Pose | undefined = undefined;
 
-  const { isStartedTraining } = useTrainingStore();
+  const { trainingSelected, isStartedTraining, countRepeat } =
+    useTrainingStore();
 
   const {
     selfieMode,
@@ -60,7 +61,12 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
   }, [canvasRef]);
 
   const onResults = (results: Results) => {
-    if (!videoRef.current || !canvasRef.current || !canvasCtxRef.current)
+    if (
+      !videoRef.current ||
+      !canvasRef.current ||
+      !canvasCtxRef.current ||
+      !trainingSelected
+    )
       return;
 
     if (!results.poseLandmarks || !results.poseWorldLandmarks) {
@@ -75,21 +81,21 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
     // console.info('poseWorldLandmarks: ', results.poseWorldLandmarks);
 
     const vectorA = {
-      x: results.poseLandmarks[12].x,
-      y: results.poseLandmarks[12].y,
-      z: results.poseLandmarks[12].z,
+      x: results.poseLandmarks[trainingSelected.pose.landmark.a].x,
+      y: results.poseLandmarks[trainingSelected.pose.landmark.a].y,
+      z: results.poseLandmarks[trainingSelected.pose.landmark.a].z,
     };
 
     const vectorB = {
-      x: results.poseLandmarks[14].x,
-      y: results.poseLandmarks[14].y,
-      z: results.poseLandmarks[14].z,
+      x: results.poseLandmarks[trainingSelected.pose.landmark.b].x,
+      y: results.poseLandmarks[trainingSelected.pose.landmark.b].y,
+      z: results.poseLandmarks[trainingSelected.pose.landmark.b].z,
     };
 
     const vectorC = {
-      x: results.poseLandmarks[16].x,
-      y: results.poseLandmarks[16].y,
-      z: results.poseLandmarks[16].z,
+      x: results.poseLandmarks[trainingSelected.pose.landmark.c].x,
+      y: results.poseLandmarks[trainingSelected.pose.landmark.c].y,
+      z: results.poseLandmarks[trainingSelected.pose.landmark.c].z,
     };
 
     // console.info('vectorA: ', vectorA);
@@ -100,7 +106,8 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
 
     const D = d * Math.sin(angle);
     const magnitudeD = Math.sqrt(D);
-    console.info('magnitudeD: ', magnitudeD);
+    countRepeat(magnitudeD);
+    // console.info('magnitudeD: ', magnitudeD);
 
     // console.info('angle: ', (angle * 180) / Math.PI);
 

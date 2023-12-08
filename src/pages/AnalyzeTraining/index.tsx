@@ -81,7 +81,7 @@ const AnalyzeTraining = () => {
           </Flex> */}
           <Flex>
             <Text fontWeight='600'>Repetições: </Text>
-            <Text ml={2}> 20x</Text>
+            <Text ml={2}> {`${trainingSelected?.repeat}X`}</Text>
           </Flex>
         </ContainerInfo>
       </Container>

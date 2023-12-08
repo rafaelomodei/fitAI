@@ -19,7 +19,7 @@ import { useTrainingStore } from '../../providers/Training';
 import { Loading } from '../../components/organisms/Loading';
 
 const Training = () => {
-  const [counter, setCounter] = useState<number>(0);
+  // const [counter, setCounter] = useState<number>(0);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -35,7 +35,8 @@ const Training = () => {
     canvasRef,
   });
 
-  const { isStartedTraining, setIsStartedTraining } = useTrainingStore();
+  const { trainingSelected, isStartedTraining, setIsStartedTraining } =
+    useTrainingStore();
 
   const {
     showDrawLines,
@@ -153,7 +154,7 @@ const Training = () => {
               fontSize='xx-large'
               fontWeight='bold'
               boxShadow='xl'
-              icon={<Center>{counter}</Center>}
+              icon={<Center>{trainingSelected?.repeat}</Center>}
             />
           ) : (
             <Button
