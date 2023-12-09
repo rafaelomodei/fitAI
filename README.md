@@ -13,7 +13,7 @@ O FitAi combina a praticidade da tecnologia web com a precisão da análise de m
 
 **Mediapipe**: Desenvolvido pelo Google, o [Mediapipe](https://developers.google.com/mediapipe) é uma biblioteca de código aberto que oferece soluções prontas para rastreamento de mãos, detecção facial e muitas outras tarefas relacionadas à visão computacional. Neste projeto, o Mediapipe será utilizado para identificar Landmarks e analisar movimentos.
 
-<img src="[https://github.com/rafaelomodei/fitAI/blob/master/readme/gif.gif](https://github.com/rafaelomodei/fitAI/blob/master/readme/Pose_landmarker_model.png)" alt="Pose landmarker">
+<img src="https://github.com/rafaelomodei/fitAI/blob/master/readme/Pose_landmarker_model.png" alt="Pose landmarker">
 
 
 ### 💪 Funcionalidades Principais
