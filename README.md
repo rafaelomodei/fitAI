@@ -30,4 +30,24 @@ Se desejar entender um pouco mais a funco como é feito para calcular o ângulo 
 
 **Contagem de Repetições**: A variação de ângulo em cada articulação será utilizada para determinar a conclusão de uma repetição. O FitAi realizará a contagem de repetições de forma automática.
 
+---
+
+### Rodar o projeto localmente
+
+```bash
+# Clone o repositório
+$ git clone git@github.com:rafaelomodei/fitAI.git
+
+# Acesse a pasta do projeto no terminal/cmd
+$ cd fitAI
+
+# Instala as depêndencias
+$ yarn
+
+# Executar o projeto
+$ yarn start
+
+# Agora é só acessa a porta localhost:3000 pelo navegador
+```
+
 
