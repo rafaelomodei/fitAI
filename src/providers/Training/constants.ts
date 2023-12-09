@@ -5,7 +5,7 @@ import { ITraining } from './interface';
 export const TRAININGS: ITraining[] = [
   {
     id: 1,
-    name: 'Bicips',
+    name: 'Biceps',
     description:
       'Adicionar rosca bíceps à sua rotina de exercícios ajuda a esculpir a parte superior do corpo, molda e tonifica os ombros e os bíceps e também melhora a força dos braços. Ao fazer rosca bíceps, mantenha os joelhos e as articulações dos cotovelos soltos, envolva os músculos centrais e mantenha as palmas das mãos voltadas para a frente. Expire ao levantar os halteres e mantenha as costas retas, os ombros para trás e a cabeça erguida.',
     icon: ICON_SVG.Bicep,
