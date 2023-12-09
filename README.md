@@ -2,7 +2,7 @@
 
 Na era digital, a busca por soluções inovadoras para melhorar a saúde e o condicionamento físico nunca esteve tão em alta. Com o avanço da tecnologia, é possível integrar ferramentas poderosas para criar experiências únicas e personalizadas. É nesse contexto que surge o "FitAi", seu personal trainer virtual, uma aplicação web que utiliza visão computacional para proporcionar um treinamento personalizado e eficiente.
 
-<img src="https://github.com/rafaelomodei/fitAI/blob/master/readme/gif.gif" alt="Texto Alternativo">
+<img src="https://github.com/rafaelomodei/fitAI/blob/master/readme/gif.gif" alt="gif FitAi">
 
 ### 📖 Introdução
 O FitAi combina a praticidade da tecnologia web com a precisão da análise de movimentos por meio dos Landmarks, pontos de referência anatômicos identificados por algoritmos de visão computacional, proporcionando uma experiência única de treino.
@@ -12,6 +12,8 @@ O FitAi combina a praticidade da tecnologia web com a precisão da análise de m
 **React e TypeScript**: O [React](https://react.dev/) é uma biblioteca JavaScript popular para construir interfaces de usuário, enquanto o TypeScript adiciona tipagem estática ao JavaScript, tornando o código mais .
 
 **Mediapipe**: Desenvolvido pelo Google, o [Mediapipe](https://developers.google.com/mediapipe) é uma biblioteca de código aberto que oferece soluções prontas para rastreamento de mãos, detecção facial e muitas outras tarefas relacionadas à visão computacional. Neste projeto, o Mediapipe será utilizado para identificar Landmarks e analisar movimentos.
+
+<img src="[https://github.com/rafaelomodei/fitAI/blob/master/readme/gif.gif](https://github.com/rafaelomodei/fitAI/blob/master/readme/Pose_landmarker_model.png)" alt="Pose landmarker">
 
 
 ### 💪 Funcionalidades Principais
