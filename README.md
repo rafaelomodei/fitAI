@@ -2,8 +2,7 @@
 
 Na era digital, a busca por soluções inovadoras para melhorar a saúde e o condicionamento físico nunca esteve tão em alta. Com o avanço da tecnologia, é possível integrar ferramentas poderosas para criar experiências únicas e personalizadas. É nesse contexto que surge o "FitAi", seu personal trainer virtual, uma aplicação web que utiliza visão computacional para proporcionar um treinamento personalizado e eficiente.
 
-
-![gif][(URL_da_Imagem](https://github.com/rafaelomodei/fitAI/blob/master/readme/gif.gif))
+<img src="[URL_da_Imagem](https://github.com/rafaelomodei/fitAI/blob/master/readme/gif.gif)" alt="Texto Alternativo">
 
 ### 📖 Introdução
 O FitAi combina a praticidade da tecnologia web com a precisão da análise de movimentos por meio dos Landmarks, pontos de referência anatômicos identificados por algoritmos de visão computacional, proporcionando uma experiência única de treino.
