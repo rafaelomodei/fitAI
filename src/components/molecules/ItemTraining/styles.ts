@@ -1,4 +1,4 @@
-import { Button as ButtonCK, Flex } from '@chakra-ui/react';
+import { Button as ButtonCK } from '@chakra-ui/react';
 import styled from 'styled-components';
 import { theme } from '../../../theme';
 import { BREAKPOINT_MOBILE_CSS } from '../../../utils/constants';

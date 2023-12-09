@@ -1,7 +1,4 @@
-import {
-  DrawerContent as DrawerContentCK,
-  Tab as TabCK,
-} from '@chakra-ui/react';
+import { DrawerContent as DrawerContentCK } from '@chakra-ui/react';
 import { styled } from 'styled-components';
 
 export const DrawerContent = styled(DrawerContentCK)`

@@ -9,9 +9,7 @@ export const VideoControlProvider = ({ children }: IVideoControlContext) => {
   const [isPaused, setIsPaused] = useState(true);
 
   const play = () => {
-    console.info('useVideoControl::Play::inicio::videoRef', videoRef);
     if (!videoRef.current) return;
-    console.info('useVideoControl::Play::fim');
     videoRef.current.play();
   };
 
@@ -21,18 +19,14 @@ export const VideoControlProvider = ({ children }: IVideoControlContext) => {
   };
 
   const getVideoState = (): HTMLVideoElement | undefined => {
-    console.info('getVideoState: ', videoRef?.current);
     if (!videoRef.current) return;
 
     return videoRef.current;
   };
 
-  useEffect(() => {
-    console.info('VideoControlProvider::useEffect::isPaused: ', isPaused);
-  }, [isPaused]);
+  useEffect(() => {}, [isPaused]);
 
   // useEffect(() => {
-  //   console.info(
   //     'VideoControlProvider::useEffect::paused: ',
   //     videoRef.current?.paused
   //   );

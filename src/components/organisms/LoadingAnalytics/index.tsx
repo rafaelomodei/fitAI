@@ -1,4 +1,4 @@
-import { Box, Center, Flex, Heading, Spinner } from '@chakra-ui/react';
+import { Box, Center, Flex, Heading } from '@chakra-ui/react';
 import { useLottie } from 'lottie-react';
 import { useEffect } from 'react';
 import { LORD_ICON } from '../../../assets/lordIcon';

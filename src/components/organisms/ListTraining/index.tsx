@@ -1,6 +1,5 @@
-import { Box, Flex, FlexProps } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { ItemTraining } from '../../molecules/ItemTraining';
-import { useState } from 'react';
 import { ITraining } from '../../../providers/Training/interface';
 import { useTrainingStore } from '../../../providers/Training';
 

@@ -1,10 +1,10 @@
-import { Box, Button, Flex, Heading, Image, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading } from '@chakra-ui/react';
 import { ListTraining } from '../../components/organisms/ListTraining';
 import { TRAININGS } from '../../providers/Training/constants';
 import { ContentTraining } from '../../components/organisms/ContentTraining';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import useDevices from '../../hooks/useDevicesHook';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useMenu from '../../hooks/useMenu';
 import { useTrainingStore } from '../../providers/Training';
 import { UploadTraining } from '../UploadTraining';
@@ -15,10 +15,6 @@ const Home = () => {
   const { isOpenMenu, setIsOpenMenu } = useMenu();
   const { trainingSelected } = useTrainingStore();
   const { isMobile } = useDevices();
-
-  useEffect(() => {
-    console.info('Home:isOpenMenu: ', isOpenMenu);
-  }, [isOpenMenu]);
 
   return (
     <Flex w='100%' h='100vh' p={8} flexDirection='column'>

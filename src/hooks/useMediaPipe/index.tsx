@@ -1,31 +1,30 @@
 import { Camera } from '@mediapipe/camera_utils';
-import { drawConnectors, drawLandmarks } from '@mediapipe/drawing_utils';
-import { Pose, POSE_CONNECTIONS, Results } from '@mediapipe/pose';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Pose, Results } from '@mediapipe/pose';
+import { useEffect, useRef, useState } from 'react';
 import { useMediaPipeStore } from '../../providers/MediaPipe';
 import { useTrainingStore } from '../../providers/Training';
 import {
   angleBetweenVectors,
   distanceDBetweenTheTwoStraightLines,
-  euclideanDistance,
 } from '../../utils/vector';
 import { drawing } from './utils';
 
-interface IConfig {
-  showDrawLines: boolean;
-  showSegmentation: boolean;
-  numPose: number;
-  minPoseDetectConfidence: number;
-  minPosePresenceConfidence: number;
-  minTrackingConfidence: number;
-}
-interface IRunMediaPipe {
-  video: HTMLVideoElement;
-  canvas: HTMLCanvasElement;
-  canvasCtx: CanvasRenderingContext2D;
-  // showSegmentation: boolean;
-  // config: IConfig;
-}
+// interface IConfig {
+//   showDrawLines: boolean;
+//   showSegmentation: boolean;
+//   numPose: number;
+//   minPoseDetectConfidence: number;
+//   minPosePresenceConfidence: number;
+//   minTrackingConfidence: number;
+// }
+
+// interface IRunMediaPipe {
+//   video: HTMLVideoElement;
+//   canvas: HTMLCanvasElement;
+//   canvasCtx: CanvasRenderingContext2D;
+//   // showSegmentation: boolean;
+//   // config: IConfig;
+// }
 
 interface IUseMediaPipeProps {
   videoRef: React.RefObject<HTMLVideoElement>;
@@ -77,9 +76,6 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
     setHasDetected(true);
     setIsLoadingMediaPipe(false);
 
-    // console.info('poseLandmarks: ', results.poseLandmarks);
-    // console.info('poseWorldLandmarks: ', results.poseWorldLandmarks);
-
     const vectorA = {
       x: results.poseLandmarks[trainingSelected.pose.landmark.a].x,
       y: results.poseLandmarks[trainingSelected.pose.landmark.a].y,
@@ -98,22 +94,14 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
       z: results.poseLandmarks[trainingSelected.pose.landmark.c].z,
     };
 
-    // console.info('vectorA: ', vectorA);
-    // console.info('vectorB: ', vectorB);
-
     const angle = angleBetweenVectors({ vectorA, vectorB, vectorC });
     const d = distanceDBetweenTheTwoStraightLines(vectorA, vectorC);
 
     const D = d * Math.sin(angle);
     const magnitudeD = Math.sqrt(D);
     countRepeat(magnitudeD);
-    // console.info('magnitudeD: ', magnitudeD);
-
-    // console.info('angle: ', (angle * 180) / Math.PI);
 
     // const distance = euclideanDistance({ vectorA, vectorB, vectorC });
-
-    // console.info('distance: ', distance);
 
     const width = videoRef.current.width;
     const height = videoRef.current.height;
@@ -164,8 +152,6 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
         selfieMode: selfieMode,
       });
 
-      console.info('passando aqui');
-
       pose?.onResults(onResults);
 
       // const camera = new Camera(video, {
@@ -178,9 +164,7 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
 
       pose?.close();
       camera.start();
-    } catch {
-      console.info('error');
-    }
+    } catch {}
   };
 
   const runMediaPipe = () => {
@@ -189,7 +173,6 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
         return;
 
       const video = videoRef.current;
-      console.info('runMediaPipe:: ', video);
       pose = new Pose({
         locateFile: (file) => {
           return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
@@ -215,9 +198,7 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
       pose?.close();
 
       animation();
-    } catch {
-      console.info('error');
-    }
+    } catch {}
   };
 
   return { hasDetected, isLoadingMediaPipe, runMediaPipe, runCamMediaPipe };

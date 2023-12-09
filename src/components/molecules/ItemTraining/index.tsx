@@ -1,9 +1,6 @@
 import { Box, Flex, Image } from '@chakra-ui/react';
-import { useEffect } from 'react';
-import { formatDiagnosticsWithColorAndContext } from 'typescript';
 import { ICON_SVG } from '../../../assets/svg';
 import useDevices from '../../../hooks/useDevicesHook';
-import useMenu from '../../../hooks/useMenu';
 import { useTrainingStore } from '../../../providers/Training';
 import { ITraining } from '../../../providers/Training/interface';
 import { Button } from './styles';
@@ -32,7 +29,6 @@ const ItemTraining = ({
       justifyContent='space-between'
       isActive={training?.id === trainingSelected?.id}
       onClick={(event) => {
-        console.info('event: ', event);
         setIsOpenMenu(false);
         setItemSelected(training ?? undefined);
       }}

@@ -1,4 +1,4 @@
-import { LegacyRef, useEffect } from 'react';
+import { LegacyRef } from 'react';
 import { Canvas, Video } from './style';
 
 interface IPlayVideo {
