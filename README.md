@@ -21,6 +21,8 @@ O FitAi combina a praticidade da tecnologia web com a precisão da análise de m
 
 **Cálculo de Ângulos**: Com base nos Landmarks identificados, o FitAi calculará os ângulos formados pelas articulações durante os exercícios, proporcionando uma avaliação detalhada da postura do usuário.
 
+<img src="https://github.com/rafaelomodei/fitAI/blob/master/readme/pose_graus.png" alt="Pose graus">
+
 **Seleção de Treinos**: Os usuários poderão escolher entre uma variedade de treinos pré-definidos, como flexões, agachamentos, ou até mesmo criar seus próprios treinos personalizados.
 
 **Contagem de Repetições**: A variação de ângulo em cada articulação será utilizada para determinar a conclusão de uma repetição. O FitAi realizará a contagem de repetições de forma automática e precisa.
