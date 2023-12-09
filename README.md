@@ -7,6 +7,7 @@ Na era digital, a busca por soluções inovadoras para melhorar a saúde e o con
 ### 📖 Introdução
 O FitAi combina a praticidade da tecnologia web com a precisão da análise de movimentos por meio dos Landmarks, pontos de referência anatômicos identificados por algoritmos de visão computacional, proporcionando uma experiência única de treino.
 
+‎ 
 
 ### 🧰 Tecnologias Utilizadas
 **React e TypeScript**: O [React](https://react.dev/) é uma biblioteca JavaScript popular para construir interfaces de usuário, enquanto o TypeScript adiciona tipagem estática ao JavaScript.
@@ -14,6 +15,9 @@ O FitAi combina a praticidade da tecnologia web com a precisão da análise de m
 **Mediapipe**: Desenvolvido pelo Google, o [Mediapipe](https://developers.google.com/mediapipe) é uma biblioteca de código aberto que oferece soluções prontas para rastreamento de mãos, detecção facial e muitas outras tarefas relacionadas à visão computacional. Neste projeto, o Mediapipe será utilizado para identificar Landmarks e analisar movimentos.
 
 <img src="https://github.com/rafaelomodei/fitAI/blob/master/readme/Pose_landmarker_model.png" alt="Pose landmarker">
+
+‎ 
+
 
 ### 💪 Funcionalidades Principais
 **Identificação de Landmarks**: Utilizando a capacidade do Mediapipe, o FitAi identificará pontos-chave no corpo do usuário, mapeando articulações e permitindo uma análise precisa dos movimentos.
