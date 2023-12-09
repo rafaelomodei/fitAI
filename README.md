@@ -19,7 +19,11 @@ O FitAi combina a praticidade da tecnologia web com a precisão da análise de m
 ### 💪 Funcionalidades Principais
 **Identificação de Landmarks**: Utilizando a capacidade do Mediapipe, o FitAi identificará pontos-chave no corpo do usuário, mapeando articulações e permitindo uma análise precisa dos movimentos.
 
-**Cálculo de Ângulos**: Com base nos Landmarks identificados, o FitAi calculará os ângulos formados pelas articulações durante os exercícios, proporcionando uma avaliação detalhada da postura do usuário.
+**Cálculo de Ângulos**: Com base nos Landmarks identificados, o FitAi calculará os ângulos formados pelas articulações durante os exercícios.
+
+Ao escolher um treino específico, um conjunto de pontos-chave é carregado para o respectivo movimento, sendo essenciais para o cálculo do ângulo. Para ilustrar, numa flexão, os pontos-chave podem abranger as mãos, cotovelos e ombros.
+
+<img src="https://github.com/rafaelomodei/fitAI/blob/master/readme/pose_graus.png" alt="Pose graus">
 
 **Seleção de Treinos**: Os usuários poderão escolher entre uma variedade de treinos pré-definidos, como flexões, agachamentos, ou até mesmo criar seus próprios treinos personalizados.
 
