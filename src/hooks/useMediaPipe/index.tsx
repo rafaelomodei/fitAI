@@ -1,6 +1,7 @@
 import { Camera } from '@mediapipe/camera_utils';
 import { Pose, Results } from '@mediapipe/pose';
 import { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useMediaPipeStore } from '../../providers/MediaPipe';
 import { useTrainingStore } from '../../providers/Training';
 import {
@@ -44,6 +45,8 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
 
   const { trainingSelected, isStartedTraining, countRepeat } =
     useTrainingStore();
+
+  const location = useLocation();
 
   const {
     selfieMode,
@@ -131,6 +134,8 @@ const useMediaPipe = (props: IUseMediaPipeProps) => {
         width: video!.width,
         height: video!.height,
       });
+
+     console.info('location: ', location.pathname)
 
       camera.start();
 

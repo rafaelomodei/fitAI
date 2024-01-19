@@ -5,12 +5,11 @@ import {
   IconButton,
   useDisclosure,
 } from '@chakra-ui/react';
-import { LegacyRef, useEffect, useRef, useState } from 'react';
+import { LegacyRef, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useWindowDimensions from '../../hooks/windowDimesionHook';
 import { Canvas, Footer, Header, Video } from './styles';
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
-import useCam from '../../hooks/useCam';
 import SideBar from '../../components/organisms/SideBar';
 import useMediaPipe from '../../hooks/useMediaPipe';
 import { useMediaPipeStore } from '../../providers/MediaPipe';
@@ -126,7 +125,6 @@ const Training = () => {
             size='sm'
             boxShadow='lg'
             onClick={() => {
-              // stopCam();
               navigate('/inicio');
             }}
             icon={<CloseIcon />}
