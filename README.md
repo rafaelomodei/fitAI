@@ -1,5 +1,7 @@
 ## FitAi - Seu Personal Trainer Virtual
 
+▶  [TREINAR AGORA](https://fit-ai-sigma.vercel.app/)
+
 Na era digital, a busca por soluções inovadoras para melhorar a saúde e o condicionamento físico nunca esteve tão em alta. Com o avanço da tecnologia, é possível integrar ferramentas poderosas para criar experiências únicas e personalizadas. É nesse contexto que surge o "FitAi", seu personal trainer virtual, uma aplicação web que utiliza visão computacional para proporcionar um treinamento personalizado e eficiente.
 
 <img src="https://github.com/rafaelomodei/fitAI/blob/master/readme/gif.gif" alt="gif FitAi">
@@ -35,6 +37,9 @@ Se desejar entender um pouco mais a funco como é feito para calcular o ângulo 
 **Contagem de Repetições**: A variação de ângulo em cada articulação será utilizada para determinar a conclusão de uma repetição. O FitAi realizará a contagem de repetições de forma automática.
 
 ---
+### Play
+
+▶  [TREINAR AGORA](https://fit-ai-sigma.vercel.app/)
 
 ### Rodar o projeto localmente
 
